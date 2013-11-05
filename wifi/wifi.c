@@ -103,6 +103,7 @@ static const char IFNAME[]              = "IFNAME=";
 #define IFNAMELEN			(sizeof(IFNAME) - 1)
 static const char WPA_EVENT_IGNORE[]    = "CTRL-EVENT-IGNORE ";
 
+static const char P2P_DISABLE_PARM[]    = "p2p_disabled=1";
 static const char SUPP_ENTROPY_FILE[]   = WIFI_ENTROPY_FILE;
 static unsigned char dummy_key[21] = { 0x02, 0x11, 0xbe, 0x33, 0x43, 0x35,
                                        0x68, 0x47, 0x84, 0x99, 0xa9, 0x2b,
@@ -447,6 +448,11 @@ int ensure_config_file_exists(const char *config_file)
         }
         TEMP_FAILURE_RETRY(write(destfd, buf, nread));
     }
+
+
+    if (!strcmp(config_file, SUPP_CONFIG_FILE)) {
+         TEMP_FAILURE_RETRY(write(destfd, P2P_DISABLE_PARM, strlen(P2P_DISABLE_PARM)));
+     }
 
     close(destfd);
     close(srcfd);
